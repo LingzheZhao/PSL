@@ -1,14 +1,36 @@
-
 cmake_minimum_required(VERSION 3.15)
 
-set(LIBRARY_NAME psl)
+set(CMAKE_CUDA_ARCHITECTURES "86;89")
+set(CMAKE_CUDA_COMPILER "/usr/local/cuda/bin/nvcc")
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+project(PlaneSweepLib LANGUAGES C CXX CUDA)
+
+set(LIBRARY_NAME PSL)
+
+################################################################################
+# Compiler
+################################################################################
+
+# Default to C++17
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
+
+# Set the default build type to 'Release'
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
 
 ################################################################################
 # Dependencies
 ################################################################################
 
+find_package(CUDA REQUIRED)
+set(CUDA_ATTACH_VS_BUILD_RULE_TO_CUDA_FILE OFF)
+include_directories(${CUDA_INCLUDE_DIRS})
+
+find_package(Eigen3 REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
 
 # Fix to avoid OpenCV package confusion with ROS melodic
 find_package(OpenCV 3.3.1 EXACT QUIET COMPONENTS core imgproc imgcodecs highgui)
@@ -20,8 +42,9 @@ if (NOT OpenCV_FOUND)
     message(WARNING "OpenCV 4 Support is experimental, use at your own risk!")
 endif()
 
+find_package(OpenGL REQUIRED)
 
-find_package(Boost REQUIRED COMPONENTS system filesystem)
+find_package(Boost COMPONENTS system program_options REQUIRED)
 
 if(NOT CMAKE_CUDA_COMPILER)
     message(STATUS "CUDA not found. Skipping PSL package...\n")
@@ -102,7 +125,7 @@ if(CMAKE_VERSION VERSION_GREATER 3.8)
 endif()
 
 # Define the folder containing the header files for this library
-set(psl_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
+set(PSL_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 
 
 ################################################################################
@@ -133,7 +156,7 @@ target_include_directories(${LIBRARY_NAME}_cuda
 )
 
 ## psl
-add_library(${LIBRARY_NAME} SHARED
+add_library(${LIBRARY_NAME}
         ${SOURCE_FILES}
         ${HEADER_FILES}
         ${FORM_HEADERS}
@@ -166,7 +189,7 @@ add_definitions(
 # Install
 ################################################################################
 
-set_target_properties(${LIBRARY_NAME} PROPERTIES OUTPUT_NAME "open_realm_${LIBRARY_NAME}-${OpenREALM_VERSION}")
+set_target_properties(${LIBRARY_NAME} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME}")
 
 install(TARGETS ${LIBRARY_NAME} ${LIBRARY_NAME}_cuda EXPORT OpenREALMTargets
         RUNTIME       DESTINATION ${OpenREALM_RUNTIME_INSTALL_DIR}
@@ -189,3 +212,5 @@ install(
 # Test
 ################################################################################
 
+add_subdirectory(app)
+add_subdirectory(test)
