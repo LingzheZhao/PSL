@@ -5,5 +5,5 @@ cmake-build*/*
 CMakeFiles/
 data/
 testResults/
-referenceTestResults/
+*TestResults/
 *.log

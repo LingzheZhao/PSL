@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.15)
 
 set(CMAKE_CUDA_ARCHITECTURES "86;89")
-set(CMAKE_CUDA_COMPILER "/usr/local/cuda/bin/nvcc")
+# set(CMAKE_CUDA_COMPILER "/usr/local/cuda/bin/nvcc")
 
 project(PlaneSweepLib LANGUAGES C CXX CUDA)
 
-set(LIBRARY_NAME PSL)
+set(LIBRARY_NAME psl)
 
 ################################################################################
 # Compiler
@@ -58,6 +58,9 @@ set(CUDA_ATTACH_VS_BUILD_RULE_TO_CUDA_FILE OFF)
 add_definitions(-DRMD_CORR_PATCH_SIDE=5)
 add_definitions(-DRMD_MAX_EXTENT_EPIPOLAR_SEARCH=100)
 
+# Deps to build subdirectory app
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
 
 ################################################################################
 # Sources
@@ -125,7 +128,7 @@ if(CMAKE_VERSION VERSION_GREATER 3.8)
 endif()
 
 # Define the folder containing the header files for this library
-set(PSL_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
+set(psl_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 
 
 ################################################################################
@@ -188,23 +191,32 @@ add_definitions(
 ################################################################################
 # Install
 ################################################################################
+include(GNUInstallDirs)
+
+MESSAGE("-- Installation Dir: " ${CMAKE_INSTALL_PREFIX})
+MESSAGE("-- Binary Installation Dir: " ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR})
+MESSAGE("-- Header Installation Dir: " ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+MESSAGE("-- Library Installation Dir: " ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 
 set_target_properties(${LIBRARY_NAME} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME}")
 
-install(TARGETS ${LIBRARY_NAME} ${LIBRARY_NAME}_cuda EXPORT OpenREALMTargets
-        RUNTIME       DESTINATION ${OpenREALM_RUNTIME_INSTALL_DIR}
-        LIBRARY       DESTINATION ${OpenREALM_LIBRARY_INSTALL_DIR}
-        ARCHIVE       DESTINATION ${OpenREALM_ARCHIVE_INSTALL_DIR}
-        FRAMEWORK     DESTINATION ${OpenREALM_FRAMEWORK_INSTALL_DIR})
+install(TARGETS ${LIBRARY_NAME} ${LIBRARY_NAME}_cuda
+        RUNTIME       DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY       DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE       DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        FRAMEWORK     DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
 
 # Headers
 install(
         DIRECTORY include/${LIBRARY_NAME}
-        DESTINATION ${OpenREALM_INC_INSTALL_DIR}/3rdparty
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         FILES_MATCHING
         PATTERN "*.h"
+        PATTERN "*.hh"
         PATTERN "*.hpp"
         PATTERN "*.cuh"
+        PATTERN "*.inc"
 )
 
 
