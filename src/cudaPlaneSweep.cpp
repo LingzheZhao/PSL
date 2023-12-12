@@ -827,7 +827,7 @@ void CudaPlaneSweep::setScale(double scale)
     this->scale = scale;
 }
 
-void CudaPlaneSweep::enableOuputUniquenessRatio(bool enabled)
+void CudaPlaneSweep::enableOutputUniquenessRatio(bool enabled)
 {
     this->outputUniquenessRatioEnabled = enabled;
 }

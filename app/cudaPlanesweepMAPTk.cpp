@@ -450,7 +450,7 @@ int main(int argc, char* argv[])
         if ((filter || storeBestCostsAndUniquenessRatios)/* && !sgm*/)
         {
             cPS.enableOutputBestCosts();
-            cPS.enableOuputUniquenessRatio();
+            cPS.enableOutputUniquenessRatio();
         }
 
         if (!((unsigned int) it->first < imageFileNames.size()))

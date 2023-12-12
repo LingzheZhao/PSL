@@ -196,7 +196,7 @@ int main(int argc, char* argv[])
         cPS.enableOutputBestDepth();
         cPS.enableColorMatching();
         cPS.enableOutputBestCosts(false);
-        cPS.enableOuputUniquenessRatio(false);
+        cPS.enableOutputUniquenessRatio(false);
         cPS.enableOutputCostVolume(false);
         cPS.enableSubPixel();
 
@@ -311,7 +311,7 @@ int main(int argc, char* argv[])
         cPS.enableOutputBestDepth();
         cPS.enableColorMatching(false);
         cPS.enableOutputBestCosts(false);
-        cPS.enableOuputUniquenessRatio(false);
+        cPS.enableOutputUniquenessRatio(false);
         cPS.enableOutputCostVolume(false);
         cPS.enableSubPixel();
 

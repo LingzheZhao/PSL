@@ -141,7 +141,7 @@ namespace PSL
         void enableColorMatching(bool enabled = true);
         void enableBoxFilterBeforeOcclusion(bool enabled = true);
         void enableOutputBestCosts(bool enabled = true);
-        void enableOuputUniquenessRatio(bool enabled = true);
+        void enableOutputUniquenessRatio(bool enabled = true);
         void enableOutputCostVolume(bool enabled = true);
         void enableSubPixel(bool enabled = true);
 
