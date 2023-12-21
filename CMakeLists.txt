@@ -21,6 +21,10 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -w -Xcompiler -fPIC")
+
+
 ################################################################################
 # Dependencies
 ################################################################################
@@ -62,10 +66,10 @@ add_definitions(-DRMD_MAX_EXTENT_EPIPOLAR_SEARCH=100)
 find_package(VTK REQUIRED)
 include(${VTK_USE_FILE})
 
+
 ################################################################################
 # Sources
 ################################################################################
-
 
 set(root ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -135,7 +139,6 @@ set(psl_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 # Build
 ################################################################################
 
-
 ## psl cuda
 include_directories(
         ${CMAKE_CURRENT_BINARY_DIR}
@@ -147,7 +150,7 @@ include_directories(
 )
 
 ## psl cuda
-add_library(${LIBRARY_NAME}_cuda
+add_library(${LIBRARY_NAME}_cuda SHARED
         ${CUDA_HEADER_FILES}
         ${CUDA_SOURCE_FILES}
 )
@@ -159,7 +162,7 @@ target_include_directories(${LIBRARY_NAME}_cuda
 )
 
 ## psl
-add_library(${LIBRARY_NAME}
+add_library(${LIBRARY_NAME} SHARED
         ${SOURCE_FILES}
         ${HEADER_FILES}
         ${FORM_HEADERS}
@@ -191,6 +194,7 @@ add_definitions(
 ################################################################################
 # Install
 ################################################################################
+
 include(GNUInstallDirs)
 
 MESSAGE("-- Installation Dir: " ${CMAKE_INSTALL_PREFIX})

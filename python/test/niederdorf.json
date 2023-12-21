@@ -1,0 +1,25 @@
+{
+  "pinhole_intrinsics": {
+    "fx": 4409.08,
+    "fy": 4409.08,
+    "cx": 2005.06,
+    "cy": 1302.86
+  },
+  "best_k": 5,
+  "scale": 0.25,
+  "match_window_size": {
+    "width": 7,
+    "height": 7
+  },
+  "num_planes": 256,
+  "occlusion_mode": "NONE",
+  "plane_generation_mode": "UNIFORM_DISPARITY",
+  "sub_pixel_interpolation_mode": "INVERSE",
+  "matching_costs": "ZNCC",
+  "enable_color_matching": false,
+  "enable_output_best_costs": true,
+  "enable_output_best_depth": true,
+  "enable_output_cost_volume": false,
+  "enable_output_uniqueness_ratio": true,
+  "enable_sub_pixel": true
+}

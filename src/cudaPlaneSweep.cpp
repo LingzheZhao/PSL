@@ -300,6 +300,10 @@ void CudaPlaneSweep::process(int refImgId, Grid<Vector4d> &planes)
         secondBestPlaneCostBuffer.clear(1e6);
     }
 
+    if (!outputBestDepthEnabled)
+    {
+        std::cout << "Warning: outputBestDepth is disabled. This will result in undefined behavior if you try to access the best depth map." << std::endl;
+    }
 
     if (outputBestDepthEnabled || outputUniquenessRatioEnabled)
     {

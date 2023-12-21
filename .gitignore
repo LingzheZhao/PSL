@@ -1,5 +1,8 @@
-.idea/
-.vscode/
+/.idea/
+/.vscode/
+*.egg
+*.egg-info/
+__pycache__
 build/
 cmake-build*/*
 CMakeFiles/
@@ -7,3 +10,4 @@ data/
 testResults/
 *TestResults/
 *.log
+*.so

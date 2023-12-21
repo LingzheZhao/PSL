@@ -173,6 +173,7 @@ int main(int argc, char* argv[])
     }
 
     avgDistance /= numDistances;
+    std::cout << "numDistances: " << numDistances << std::endl;
     std::cout << "Cameras have an average distance of " << avgDistance << "." << std::endl;
 
     float minZ = (float) (2.5f*avgDistance);
